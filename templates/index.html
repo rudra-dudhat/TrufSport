@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}TurfSPort | Book Your Game{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Base Styles */
+    :root {
+        --primary-dark: #293681;
+        --primary-light: #4274d9;
+        --accent: #95ccdd;
+        --bg-color: #d0e7e6;
+        --surface: #FFFFFF;
+        --text-main: #1F2933;
+        --text-muted: #6B7280;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-main);
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px;
+        width: 100%;
+    }
+
+    /* Navbar */
+    .navbar {
+        background-color: var(--primary-dark);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-brand {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
+
+    .navbar-links a {
+        margin-left: 24px;
+        font-weight: 500;
+        color: #FFFFFF;
+        transition: color 0.2s;
+    }
+
+    .navbar-links a:hover {
+        color: var(--accent);
+    }
+
+    /* Hero */
+    .hero {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+        margin-bottom: 16px;
+        color: #FFFFFF;
+    }
+
+    .search-btn {
+        padding: 12px 24px;
+        background-color: var(--primary-light);
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .search-btn:hover {
+        background-color: var(--accent);
+        color: var(--primary-dark);
+        transform: translateY(-2px);
+    }
+
+    /* Section */
+    .section-heading {
+        margin: 48px 0 24px 0;
+        font-size: 28px;
+    }
+
+    /* Card */
+    .card {
+        background-color: var(--surface);
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(41, 54, 129, 0.05);
+        transition: transform 0.2s, box-shadow 0.2s;
+        position: relative;
+        display: block;
+        height: 100%;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 12px rgba(41, 54, 129, 0.15);
+    }
+
+    .card-img-placeholder {
+        height: 160px;
+        background-color: #E5E7EB;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .card-price {
+        font-size: 14px;
+        color: var(--text-muted);
+    }
+
+    .price-val {
+        font-weight: 600;
+        color: var(--primary-dark);
+    }
+
+    /* Footer */
+    .footer {
+        background-color: var(--primary-dark);
+        padding: 32px 0;
+        text-align: center;
+        border-top: 1px solid #E5E7EB;
+        margin-top: auto;
+    }
+
+    .footer p {
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<header class="hero"
+    style="background-color: var(--primary-dark); background-image: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);">
+    <div class="container">
+        <h1 style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Book your game, instantly.</h1>
+        <p>Find the best sports facilities near you and lock in your slot.</p>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search for a sport or venue...">
+            <button class="search-btn">Search</button>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container" id="sports">
+    <h2 class="section-heading">Available Sports</h2>
+
+    <div class="row g-4" style="margin-bottom: 64px;">
+        <!-- Card 1 (Featured) -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=box-cricket" class="card" style="border: 2px solid #FF7A00;">
+                <div
+                    style="position: absolute; top: 12px; right: 12px; background: #FF7A00; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; z-index: 10;">
+                    Featured</div>
+                <div class="card-img-placeholder">🏏</div>
+                <div class="card-body">
+                    <h3 class="card-title">Box Cricket</h3>
+                    <p class="card-price">From <span class="price-val">₹800/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=pickleball" class="card">
+                <div class="card-img-placeholder">🏓</div>
+                <div class="card-body">
+                    <h3 class="card-title">Pickleball</h3>
+                    <p class="card-price">From <span class="price-val">₹600/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=football" class="card">
+                <div class="card-img-placeholder">⚽</div>
+                <div class="card-body">
+                    <h3 class="card-title">Football Box (5-a-side)</h3>
+                    <p class="card-price">From <span class="price-val">₹1200/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=pool" class="card">
+                <div class="card-img-placeholder">🎱</div>
+                <div class="card-body">
+                    <h3 class="card-title">8-Ball Pool</h3>
+                    <p class="card-price">From <span class="price-val">₹300/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=bowling" class="card">
+                <div class="card-img-placeholder">🎳</div>
+                <div class="card-body">
+                    <h3 class="card-title">Bowling</h3>
+                    <p class="card-price">From <span class="price-val">₹400/game</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=badminton" class="card">
+                <div class="card-img-placeholder">🏸</div>
+                <div class="card-body">
+                    <h3 class="card-title">Badminton</h3>
+                    <p class="card-price">From <span class="price-val">₹500/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=gokarting" class="card">
+                <div class="card-img-placeholder">🏎️</div>
+                <div class="card-body">
+                    <h3 class="card-title">Go-Karting</h3>
+                    <p class="card-price">From <span class="price-val">₹900/session</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=golf" class="card">
+                <div class="card-img-placeholder">⛳</div>
+                <div class="card-body">
+                    <h3 class="card-title">Golf</h3>
+                    <p class="card-price">From <span class="price-val">₹1500/session</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=tennis" class="card">
+                <div class="card-img-placeholder">🎾</div>
+                <div class="card-body">
+                    <h3 class="card-title">Tennis</h3>
+                    <p class="card-price">From <span class="price-val">₹700/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=volleyball" class="card">
+                <div class="card-img-placeholder">🏐</div>
+                <div class="card-body">
+                    <h3 class="card-title">Volleyball</h3>
+                    <p class="card-price">From <span class="price-val">₹600/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=basketball" class="card">
+                <div class="card-img-placeholder">🏀</div>
+                <div class="card-body">
+                    <h3 class="card-title">Basketball</h3>
+                    <p class="card-price">From <span class="price-val">₹800/hr</span></p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a href="{{ url_for('venue_detail') }}?id=cricket-ground" class="card">
+                <div class="card-img-placeholder">🏏</div>
+                <div class="card-body">
+                    <h3 class="card-title">Cricket Ground</h3>
+                    <p class="card-price">From <span class="price-val">₹2500/match</span></p>
+                </div>
+            </a>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

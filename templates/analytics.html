@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics | TurfSPort{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-dark: #293681;
+        --primary-light: #4274d9;
+        --accent: #95ccdd;
+        --bg-color: #d0e7e6;
+        --surface: #ffffff;
+        --text-main: #1F2933;
+        --text-muted: #6B7280;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-main);
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px;
+        width: 100%;
+    }
+
+    .navbar {
+        background-color: var(--primary-dark);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-brand {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
+
+    .navbar-links a {
+        margin-left: 24px;
+        font-weight: 500;
+        color: #FFFFFF;
+        transition: color 0.2s;
+    }
+
+    .navbar-links a:hover {
+        color: var(--accent);
+    }
+
+    .footer {
+        background-color: var(--primary-dark);
+        padding: 32px 0;
+        text-align: center;
+        border-top: 1px solid #E5E7EB;
+        margin-top: 40px;
+    }
+
+    .footer p {
+        color: #FFFFFF;
+        font-size: 14px;
+    }
+
+    .analytics-shell {
+        max-width: 1180px;
+        margin: 24px auto 64px;
+        padding: 0 18px;
+    }
+
+    .analytics-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .analytics-hero {
+        background: #ffffff;
+        border-radius: 28px;
+        padding: 34px 32px;
+        color: var(--text-main);
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        width: 100%;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .analytics-title {
+        font-size: 38px;
+        margin-bottom: 14px;
+        line-height: 1.05;
+    }
+
+    .analytics-copy {
+        font-size: 17px;
+        color: #475569;
+        max-width: 720px;
+        line-height: 1.7;
+    }
+
+    .analytics-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .overview-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: #EFF6FF;
+        border: 1px solid #DDE9FF;
+        color: #1E40AF;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    .overview-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        color: #FFFFFF;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+    .metric-card {
+        background: #ffffff;
+        border-radius: 22px;
+        padding: 26px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .metric-label {
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #64748B;
+        margin-bottom: 10px;
+    }
+
+    .metric-value {
+        font-size: 38px;
+        font-weight: 800;
+        color: #0F172A;
+        line-height: 1;
+    }
+
+    .metric-extra {
+        color: #475569;
+        margin-top: 8px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .chart-panel {
+        background: #ffffff;
+        border-radius: 26px;
+        padding: 28px;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        margin-top: 28px;
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .chart-header h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #111827;
+    }
+
+    .chart-tabs {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .chart-tab {
+        border: 1px solid rgba(148, 163, 184, 0.8);
+        background: #eef2ff;
+        color: #1e3a8a;
+        padding: 11px 20px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 600;
+    }
+
+    .chart-tab.active {
+        background: #4338CA;
+        color: #ffffff;
+        border-color: #4338CA;
+    }
+
+    .chart-subtitle {
+        color: #475569;
+        font-size: 14px;
+    }
+
+    .chart-legend {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        margin-top: 24px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 18px;
+        background: #f8fafc;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #4338CA;
+        flex-shrink: 0;
+    }
+
+    .legend-label {
+        color: #0f172a;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .chart-area {
+        min-height: 380px;
+        position: relative;
+    }
+
+    .chart-svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .chart-tooltip {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        pointer-events: none;
+        background: rgba(15, 23, 42, 0.95);
+        color: #F8FAFC;
+        padding: 12px 16px;
+        border-radius: 16px;
+        font-size: 13px;
+        line-height: 1.5;
+        display: none;
+        min-width: 160px;
+        box-shadow: 0 28px 60px rgba(15, 23, 42, 0.22);
+    }
+
+    .chart-tooltip strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #FFFFFF;
+    }
+
+    .chart-bar:hover,
+    .chart-point:hover {
+        opacity: 0.96;
+        filter: drop-shadow(0 10px 20px rgba(67, 56, 202, 0.22));
+    }
+
+    .chart-empty {
+        fill: #64748b;
+        font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+        .analytics-header {
+            flex-direction: column;
+        }
+
+        .summary-grid {
+            margin-top: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <div class="analytics-shell">
+        <section class="analytics-hero">
+            <div class="analytics-header">
+                <div>
+                    <span class="overview-pill">Analytics dashboard</span>
+                    <h1 class="analytics-title">TurfSPort booking insights</h1>
+                    <p class="analytics-copy">Track confirmed bookings, venue demand, and revenue trends in one clear and consistent TurfSPort dashboard.</p>
+                </div>
+                <div style="min-width: 220px; align-self: flex-start; display: flex; gap: 12px; align-items: center;">
+                    <select id="filter-month" class="overview-pill" style="cursor: pointer; background: white; color: #1E40AF; padding: 10px; border: 1px solid #DDE9FF;">
+                        <option value="">Loading...</option>
+                    </select>
+                    <select id="filter-year" class="overview-pill" style="cursor: pointer; background: white; color: #1E40AF; padding: 10px; border: 1px solid #DDE9FF;">
+                        <option value="">Loading...</option>
+                    </select>
+                    <button id="reset-zoom-btn" class="overview-pill" style="cursor: pointer; border: none;">Reset Zoom</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="summary-grid">
+        <div class="metric-card">
+            <div class="metric-label">Total bookings</div>
+            <div class="metric-value" id="total-bookings">0</div>
+            <div class="metric-extra">Total booking records in the system.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Confirmed bookings</div>
+            <div class="metric-value" id="confirmed-bookings">0</div>
+            <div class="metric-extra">Bookings that are currently confirmed.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Cancelled bookings</div>
+            <div class="metric-value" id="cancelled-bookings">0</div>
+            <div class="metric-extra">Slots that were cancelled or released.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Revenue</div>
+            <div class="metric-value" id="revenue">₹0</div>
+            <div class="metric-extra">Confirmed booking revenue only.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Average booking value</div>
+            <div class="metric-value" id="average-booking">₹0</div>
+            <div class="metric-extra">Revenue per confirmed booking.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Top day / venue</div>
+            <div class="metric-value" id="top-venue">-</div>
+            <div class="metric-extra" id="busiest-day">Peak day: -</div>
+        </div>
+    </div>
+
+    <div class="chart-panel">
+        <div class="chart-header">
+            <div>
+                <h2>Booking analytics chart</h2>
+                <div class="chart-subtitle" id="chart-subtitle">Compare the most booked venues in your system.</div>
+            </div>
+            <div class="chart-tabs">
+                <button class="chart-tab active" data-view="trend">Monthly Trend</button>
+                <button class="chart-tab" data-view="revenue">Revenue Breakdown</button>
+                <button class="chart-tab" data-view="peak">Peak Booking Times</button>
+            </div>
+        </div>
+
+        <div class="chart-area" id="chart-area" style="position: relative; height: 400px; width: 100%;">
+            <canvas id="analyticsChartCanvas"></canvas>
+        </div>
+    </div>
+</div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+<script src="/static/js/interactivity.js"></script>
+{% endblock %}

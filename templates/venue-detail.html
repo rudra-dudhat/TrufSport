@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Venue Detail | TurfSPort{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-dark: #293681;
+        --primary-light: #4274d9;
+        --accent: #95ccdd;
+        --bg-color: #d0e7e6;
+        --surface: #FFFFFF;
+        --text-main: #1F2933;
+        --text-muted: #6B7280;
+        --error: #DC2626;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+    h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--text-main); }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+    .navbar { background-color: var(--primary-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .navbar-brand { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700; color: #FFFFFF; }
+    .navbar-links a { margin-left: 24px; font-weight: 500; color: #FFFFFF; transition: color 0.2s; }
+    .navbar-links a:hover { color: var(--accent); }
+
+    .venue-header { margin-top: 32px; margin-bottom: 24px; }
+    .venue-title { font-size: 32px; margin-bottom: 8px; }
+    .venue-location { color: var(--text-muted); font-size: 16px; }
+
+    .content-split { display: flex; gap: 32px; margin-bottom: 64px; flex-wrap: wrap; }
+    .main-column { flex: 2; min-width: 300px; }
+    .side-column { flex: 1; min-width: 300px; }
+
+    /* Image Slider */
+    .slider-container { position: relative; width: 100%; height: 400px; background-color: #E5E7EB; border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+    .slider-image { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .slider-image.active { display: block; }
+    .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 10; }
+    .slider-btn:hover { background: rgba(0,0,0,0.8); }
+    .prev-btn { left: 16px; }
+    .next-btn { right: 16px; }
+    .slider-dots { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .slider-dot { width: 10px; height: 10px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; }
+    .slider-dot.active { background: white; }
+
+    /* Booking Card */
+    .booking-card { background-color: var(--surface); border: 1px solid var(--accent); padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(41, 54, 129, 0.1); }
+    .booking-card h3 { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #E5E7EB; }
+
+    /* Form */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-main); }
+    .form-control { width: 100%; padding: 10px 12px; border: 1px solid #D1D5DB; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; transition: border-color 0.2s; }
+    .form-control:focus { outline: none; border-color: var(--primary-light); }
+    .error-message { color: var(--error); font-size: 14px; margin-top: 4px; display: none; }
+    .input-error { border-color: var(--error); }
+    .btn-primary { width: 100%; padding: 12px 24px; background-color: var(--primary-light); color: white; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; margin-top: 8px; }
+    .btn-primary:hover { background-color: var(--accent); color: var(--primary-dark); transform: translateY(-2px); }
+
+    /* Footer */
+    .footer { background-color: var(--primary-dark); padding: 32px 0; text-align: center; border-top: 1px solid #E5E7EB; margin-top: auto; }
+    .footer p { color: #FFFFFF; font-size: 14px; }
+
+    /* Slot Chips */
+    .slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 8px; }
+    .slot-chip { padding: 8px; text-align: center; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid var(--primary-light); color: var(--primary-light); background-color: white; user-select: none; }
+    .slot-chip:hover:not(.booked) { background-color: var(--primary-light); color: white; }
+    .slot-chip.selected { background-color: var(--primary-dark); color: white; border-color: var(--primary-dark); }
+    .slot-chip.booked { background-color: #F3F4F6; color: #9CA3AF; border-color: #E5E7EB; cursor: not-allowed; position: relative; text-decoration: line-through; }
+    .slot-chip.booked::after { content: "Booked"; position: absolute; top: -6px; right: -6px; background-color: var(--error); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 600; text-decoration: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <!-- Header -->
+        <div class="venue-header">
+            <h1 class="venue-title" id="venue-title-display" style="color: var(--primary-dark); text-transform: uppercase;">Greenfield Box Cricket</h1>
+            <p class="venue-location" id="venue-location-display">📍 Sector 14, Main Road, City Center</p>
+        </div>
+
+        <div class="content-split">
+            <!-- Left Column: Slider and Info -->
+            <div class="main-column">
+                <div class="slider-container">
+                    <img id="slider-img-1" src="{{ url_for('static', filename='images/default1.jpg') }}" class="slider-image active" alt="Venue view 1">
+                    <img id="slider-img-2" src="{{ url_for('static', filename='images/default2.jpg') }}" class="slider-image" alt="Venue view 2">
+                    <img id="slider-img-3" src="{{ url_for('static', filename='images/default3.jpg') }}" class="slider-image" alt="Venue view 3">
+                    <button class="slider-btn prev-btn" id="prev-btn">&#10094;</button>
+                    <button class="slider-btn next-btn" id="next-btn">&#10095;</button>
+                    <div class="slider-dots">
+                        <div class="slider-dot active"></div>
+                        <div class="slider-dot"></div>
+                        <div class="slider-dot"></div>
+                    </div>
+                </div>
+
+                <h3>About This Venue</h3>
+                <p id="venue-desc-display" style="color: var(--text-muted); margin-top: 8px; line-height: 1.8;">
+                    Welcome to Greenfield Box Cricket, the premier location for 6-a-side matches.
+                    Equipped with high-intensity floodlights, professional-grade turf, and dugout areas.
+                </p>
+            </div>
+
+            <!-- Right Column: Booking Form -->
+            <div class="side-column">
+                <div class="booking-card">
+                    <h3>Book a Slot</h3>
+                    <form id="booking-form" novalidate>
+                        <div class="form-group">
+                            <label for="customer-name">Full Name</label>
+                            <input type="text" id="customer-name" class="form-control" placeholder="Enter your name" required>
+                            <div class="error-message" id="customer-name-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer-phone">Phone Number</label>
+                            <input type="tel" id="customer-phone" class="form-control" placeholder="10-digit number" required>
+                            <div class="error-message" id="customer-phone-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-date">Select Date</label>
+                            <input type="date" id="booking-date" class="form-control" required>
+                            <div class="error-message" id="booking-date-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Time Slot</label>
+                            <div id="slots-container" class="slots-grid">
+                                <p style="color: var(--text-muted); font-size: 14px; grid-column: 1 / -1;">Please select a date to view slots.</p>
+                            </div>
+                            <input type="hidden" id="booking-time" required>
+                            <div class="error-message" id="booking-time-error"></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

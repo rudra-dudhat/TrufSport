@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings | TurfSPort{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-dark: #293681;
+        --primary-light: #4274d9;
+        --accent: #95ccdd;
+        --bg-color: #d0e7e6;
+        --surface: #FFFFFF;
+        --text-main: #1F2933;
+        --text-muted: #6B7280;
+        --error: #DC2626;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--text-main); }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+    .navbar { background-color: var(--primary-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .navbar-brand { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700; color: #FFFFFF; }
+    .navbar-links a { margin-left: 24px; font-weight: 500; color: #FFFFFF; transition: color 0.2s; }
+    .navbar-links a:hover { color: var(--accent); }
+
+    .page-header { margin: 40px 0 24px; }
+
+    .booking-card { background-color: var(--surface); border: 1px solid var(--accent); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(41, 54, 129, 0.1); display: flex; justify-content: space-between; align-items: center; }
+    .booking-details h3 { margin-bottom: 8px; color: var(--primary-dark); }
+    .booking-details p { color: var(--text-muted); font-size: 14px; margin-bottom: 4px; }
+
+    .booking-status { text-align: right; }
+    .status-badge { display: inline-block; padding: 6px 12px; border-radius: 16px; font-size: 14px; font-weight: 600; }
+    .status-confirmed { background-color: #D1FAE5; color: #065F46; }
+    .status-past { background-color: #E5E7EB; color: #374151; }
+
+    .btn-cancel { margin-top: 12px; padding: 8px 16px; background-color: white; color: var(--error); border: 1px solid var(--error); border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+    .btn-cancel:hover { background-color: var(--error); color: white; }
+
+    .footer { background-color: var(--primary-dark); padding: 32px 0; text-align: center; border-top: 1px solid #E5E7EB; margin-top: auto; }
+    .footer p { color: #FFFFFF; font-size: 14px; }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h2>My Bookings</h2>
+            <p style="color: var(--text-muted);">View and manage your upcoming and past slot bookings.</p>
+        </div>
+
+        <!-- Dynamic Bookings injected by interactivity.js -->
+        <div id="dynamic-bookings"></div>
+
+        <!-- Static Past Booking example -->
+        <div class="booking-card">
+            <div class="booking-details">
+                <h3>Smash Pickleball Court</h3>
+                <p><strong>Sport:</strong> Pickleball</p>
+                <p><strong>Date:</strong> 10th July 2026</p>
+                <p><strong>Time:</strong> 09:00 - 10:00</p>
+                <p><strong>Price:</strong> ₹600</p>
+            </div>
+            <div class="booking-status">
+                <span class="status-badge status-past">Past</span><br>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px;">Cannot cancel past bookings</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,79 @@
+.hero p {
+            font-size: 18px;
+            color: #E0E0E0;
+            margin-bottom: 32px;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 70%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+        }
+
+/* --- Global Responsive Navbar --- */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 4px;
+    z-index: 200;
+}
+.mobile-menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    /* Override local template styles with !important */
+    .navbar .container {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+    .mobile-menu-btn {
+        display: flex !important;
+    }
+    .navbar-links {
+        display: none !important;
+        width: 100% !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 16px !important;
+        margin-top: 16px !important;
+        padding-bottom: 12px !important;
+    }
+    .navbar-links.active {
+        display: flex !important;
+    }
+    .navbar-links a {
+        margin-left: 0 !important;
+        font-size: 16px !important;
+        padding: 8px 0 !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    /* Hamburger animation when open */
+    .mobile-menu-btn.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+    .mobile-menu-btn.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+}
